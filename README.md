@@ -29,7 +29,7 @@ if (dint1 < dint2)                    // Simple comparison
 
 int daysBetween = Dint.diff(20150912, 20140912); // = 365
 
-Date asDate = Dint.toDate();
+Date asDate = Dint.toDate(dint);      // Simple conversion
 
 Dint.year(20140912);  // 2014
 Dint.month(20140912); // 9
