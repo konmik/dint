@@ -1,0 +1,56 @@
+group 'info.android15.dint'
+version '1.0.0'
+
+apply plugin: 'java'
+apply plugin: 'com.bmuschko.nexus'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+modifyPom {
+    project {
+        name 'Dint - a KISS date-only library'
+        description 'Handling dates in a human-readable integer format.'
+        url 'https://github.com/konmik/dint'
+        inceptionYear '2015'
+
+        scm {
+            url 'https://github.com/konmik/dint'
+            connection 'scm:https://konmik@github.com/konmik/dint.git'
+            developerConnection 'scm:git://github.com/konmik/dint.git'
+        }
+
+        licenses {
+            license {
+                name 'MIT'
+                url 'http://opensource.org/licenses/MIT'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'sirstripy'
+                name 'Konstantin Mikheev'
+                email 'sirstripy@gmail.com'
+            }
+        }
+    }
+}
+
+extraArchive {
+    sources = true
+    tests = true
+    javadoc = true
+}
+
+nexus {
+    sign = true
+//    repositoryUrl = 'file://C:/Users/konmik/.m2/repository'
+//    snapshotRepositoryUrl = 'file://C:/Users/konmik/.m2/repository'
+}
