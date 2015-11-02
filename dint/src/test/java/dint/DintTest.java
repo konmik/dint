@@ -47,6 +47,8 @@ public class DintTest {
         assertEquals(20140912, compose(2013, 9, 12 + 365));
         assertEquals(20140912, compose(2015, 9, 12 - 365));
         assertEquals(20150912, compose(2016, 9, 12 - 366));
+        assertEquals(20141201, compose(2014, 12, 1));
+        assertEquals(20151102, compose(2015, 11, 2));
     }
 
     @Test

@@ -48,5 +48,5 @@ And more! I just simple advise you to jump to the source code itself:
 ### Include
 
 ```groovy
-compile 'info.android15.dint:dint:1.0.1'
+compile 'info.android15.dint:dint:1.0.2'
 ```

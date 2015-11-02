@@ -1,5 +1,5 @@
 group 'info.android15.dint'
-version '1.0.1'
+version '1.0.2'
 
 apply plugin: 'java'
 sourceCompatibility = 1.6
@@ -54,6 +54,6 @@ extraArchive {
 
 nexus {
     sign = true
-//    repositoryUrl = 'file://C:/Users/konmik/.m2/repository'
-//    snapshotRepositoryUrl = 'file://C:/Users/konmik/.m2/repository'
+    repositoryUrl = 'file://C:/Users/konmik/.m2/repository'
+    snapshotRepositoryUrl = 'file://C:/Users/konmik/.m2/repository'
 }

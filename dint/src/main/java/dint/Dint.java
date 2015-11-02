@@ -141,7 +141,7 @@ public class Dint {
      */
     public static int addMonths(int dint, int add) {
         int months = year(dint) * 12 + month(dint) + add;
-        return composeLimit(dint, months / 12, (months + 1) % 12 - 1);
+        return composeLimit(day(dint), months / 12, months % 12);
     }
 
     /**
