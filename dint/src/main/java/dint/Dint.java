@@ -140,8 +140,8 @@ public class Dint {
      * The resulting dint's number of days will be limited by a number of days in the resulting month.
      */
     public static int addMonths(int dint, int add) {
-        int months = year(dint) * 12 + month(dint) + add;
-        return composeLimit(day(dint), months / 12, months % 12);
+        int months = year(dint) * 12 + month(dint) - 1 + add;
+        return composeLimit(dint, months / 12, months % 12 + 1);
     }
 
     /**
@@ -149,8 +149,8 @@ public class Dint {
      * If the dint day is the last day in a month then the resulting day will be the last day in a month as well.
      */
     public static int addMonthsExtend(int dint, int add) {
-        int months = year(dint) * 12 + month(dint) + add;
-        return composeExtend(dint, months / 12, (months + 1) % 12 - 1);
+        int months = year(dint) * 12 + month(dint) - 1 + add;
+        return composeExtend(dint, months / 12, months % 12 + 1);
     }
 
     /**

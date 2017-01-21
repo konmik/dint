@@ -1,26 +1,75 @@
 package dint;
 
+import org.intelligentsia.hirondelle.date4j.DateTime;
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
-import static dint.Dint.addDays;
-import static dint.Dint.addMonths;
-import static dint.Dint.addMonthsExtend;
-import static dint.Dint.addYears;
-import static dint.Dint.addYearsExtend;
-import static dint.Dint.compose;
-import static dint.Dint.create;
-import static dint.Dint.daysInAMonth;
-import static dint.Dint.diff;
-import static dint.Dint.firstDayOfMonth;
-import static dint.Dint.isLeapYear;
-import static dint.Dint.lastDayOfMonth;
+import static dint.Dint.*;
+import static java.lang.String.format;
+import static org.intelligentsia.hirondelle.date4j.DateTime.DayOverflow.LastDay;
 import static org.junit.Assert.assertEquals;
 
 public class DintTest {
+
+    private static final int RUNS = 100000;
+    private static final int SEED = 1;
+
+    @Test
+    public void random_data_test() {
+        Random r = new Random(SEED);
+        for (int iteration = 0; iteration < RUNS; iteration++) {
+            testAddDays(r);
+            testAddMonths(r);
+            testAddYears(r);
+        }
+    }
+
+    private void testAddYears(Random r) {
+        DateTime d1 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+
+        int yearsAdd = r.nextInt(4999);
+        DateTime added = d1.plus(yearsAdd, 0, 0, 0, 0, 0, LastDay);
+        int dint2 = dateTimeToDint(added);
+        assertEquals(dint2, Dint.addYears(dint1, yearsAdd));
+
+        boolean isEndOfMonth = isLastDayOfMonth(d1);
+        DateTime extendedExpected = isEndOfMonth ? added.getEndOfMonth() : added;
+        int dint3 = dateTimeToDint(extendedExpected);
+        int result = Dint.addYearsExtend(dint1, yearsAdd);
+        assertEquals(format("from: %d, add: %d, result: %d, expected: %d", dint1, yearsAdd, result, dint3), dint3, result);
+    }
+
+    private void testAddMonths(Random r) {
+        DateTime d1 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+
+        int monthsAdd = r.nextInt(10000);
+        DateTime added = d1.plus(0, monthsAdd, 0, 0, 0, 0, LastDay);
+
+        int dint2 = dateTimeToDint(added);
+        assertEquals(dint2, Dint.addMonths(dint1, monthsAdd));
+
+        boolean isEndOfMonth = isLastDayOfMonth(d1);
+        DateTime extendedExpected = isEndOfMonth ? added.getEndOfMonth() : added;
+        int dint3 = dateTimeToDint(extendedExpected);
+        int result = Dint.addMonthsExtend(dint1, monthsAdd);
+        assertEquals(format("from: %d, add: %d, result: %d, expected: %d", dint1, monthsAdd, result, dint3), dint3, result);
+    }
+
+    private void testAddDays(Random r) {
+        DateTime d1 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+
+        int daysToAdd = r.nextInt(10000);
+        DateTime d2 = d1.plusDays(daysToAdd);
+        int dint2 = dateTimeToDint(d2);
+        assertEquals(dint2, Dint.addDays(dint1, daysToAdd));
+    }
 
     @Test
     public void test_create_from_ymd() throws Exception {
@@ -165,6 +214,9 @@ public class DintTest {
         assertEquals(20140912, addMonthsExtend(20140812, 1));
         assertEquals(20140912, addMonthsExtend(20140812, 1));
         assertEquals(20141031, addMonthsExtend(20140930, 1));
+
+        assertEquals(20141030, addMonths(20140930, 1));
+        assertEquals(20141031, addMonthsExtend(20140930, 1));
     }
 
     @Test
@@ -197,5 +249,21 @@ public class DintTest {
         calendar.set(Calendar.MONTH, temp.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, temp.get(Calendar.DAY_OF_MONTH));
         return calendar;
+    }
+
+    private static boolean isLastDayOfMonth(DateTime dateTime) {
+        return dateTime.getDay().equals(dateTime.getNumDaysInMonth());
+    }
+
+    private static int dateTimeToDint(DateTime dateTime) {
+        return Dint.create(dateTime.getYear(), dateTime.getMonth(), dateTime.getDay());
+    }
+
+    private static DateTime randomDateTime(Random random) {
+        return new DateTime(
+            1 + random.nextInt(5000),
+            1 + random.nextInt(11),
+            1 + random.nextInt(28),
+            0, 0, 0, 0);
     }
 }
