@@ -25,7 +25,42 @@ public class DintTest {
             testAddDays(r);
             testAddMonths(r);
             testAddYears(r);
+            testDiff(r);
+            testFirstDayOfMonth(r);
+            testLastDayOfMonth(r);
+            testDaysInAMonth(r);
+            testIsLeapYear(r);
         }
+    }
+
+    private void testIsLeapYear(Random r) {
+        DateTime d1 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+        assertEquals("" + dint1, d1.isLeapYear(), isLeapYear(year(dint1)));
+    }
+
+    private void testDaysInAMonth(Random r) {
+        DateTime d1 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+        assertEquals(d1.getNumDaysInMonth(), daysInAMonth(year(dint1), month(dint1)));
+    }
+
+    private void testLastDayOfMonth(Random r) {
+        DateTime d1 = randomDateTime(r);
+        assertEquals(dateTimeToDint(d1.getEndOfMonth()), lastDayOfMonth(dateTimeToDint(d1)));
+    }
+
+    private void testFirstDayOfMonth(Random r) {
+        DateTime d1 = randomDateTime(r);
+        assertEquals(dateTimeToDint(d1.getStartOfMonth()), firstDayOfMonth(dateTimeToDint(d1)));
+    }
+
+    private void testDiff(Random r) {
+        DateTime d1 = randomDateTime(r);
+        DateTime d2 = randomDateTime(r);
+        int dint1 = dateTimeToDint(d1);
+        int dint2 = dateTimeToDint(d2);
+        assertEquals(d2.numDaysFrom(d1), diff(dint1, dint2));
     }
 
     private void testAddYears(Random r) {
